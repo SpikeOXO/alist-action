@@ -33,21 +33,21 @@ jobs:
           bash -x init_alist.sh
 
       - name: Wait for Alist to start
-        run: |
-          max_retries=10
-          retries=0
-          while [ $retries -lt $max_retries ]; do
-            # 使用 curl 命令检查 Alist 是否已经启动
-            response_code=$(curl -s -o /dev/null -w "%{http_code}" http://localhost:5244)
-            if [ $response_code -eq 200 ]; then
-              echo "Alist is up and running."
-              break
-            else
-              echo "Alist is not yet running. Waiting..."
-              retries=$((retries+1))
-              sleep 5  # 等待 5 秒后重试
-            fi
-          done
+        run:  bash -c '
+    max_retries=10
+    retries=0
+    while [ $retries -lt $max_retries ]; do
+      # 使用 curl 命令检查 Alist 是否已经启动
+      response_code=$(curl -s -o /dev/null -w "%{http_code}" http://localhost:5244)
+      if [ $response_code -eq 200 ]; then
+        echo "Alist is up and running."
+        break
+      else
+        echo "Alist is not yet running. Waiting..."
+        retries=$((retries+1))
+        sleep 5  # 等待 5 秒后重试
+      fi
+    done
       
       - name: rclone
         uses: wei/rclone@v1
