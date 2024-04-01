@@ -1,0 +1,24 @@
+name: Copy Files
+
+on:
+  schedule:
+    - cron: '0 */8 * * *'  # 每隔8小时触发一次
+
+jobs:
+  copy:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Install rclone
+      run: |
+        curl https://rclone.org/install.sh | sudo bash
+
+    - name: rclone
+      if: steps.downloading.outputs.filename != '' && !cancelled() && !failure()
+      uses: wei/rclone@v1
+      env:
+        RCLONE_CONF: ${{ secrets.RCLONE_CONF }}
+      with:
+        args: copy  a:/ b:/
