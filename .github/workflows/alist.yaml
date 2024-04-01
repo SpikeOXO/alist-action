@@ -19,15 +19,38 @@ jobs:
           REFRESH_TOKEN: '${{ secrets.ALIYUN_REFRESH_TOKEN }}'
           PORT: 8080
     steps:
-      - uses: actions/checkout@v2
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup Python v4
+        uses: actions/setup-python@v4
         with:
-          persist-credentials: false # otherwise, the token used is the GITHUB_TOKEN, instead of your personal token
-          fetch-depth: 0 
-      - name: 检查空间使用情况
-        run: |
-          echo "Free space:"
-          df -h
+          python-version: 3.11
           
+      - name: Install Alist
+        env:
+          _ALIST_ADMIN_PASSWORD: ${{ secrets.ALIST_ADMIN_PASSWORD }}
+        run: |
+          sudo ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
+          # init-alist 总是会重置管理员密码为环境变量。
+          bash -x init_alist.sh
+      - name: Wait for Alist to start
+        run: |
+          max_retries=10
+          retries=0
+          while [ $retries -lt $max_retries ]; do
+            # 使用 curl 命令检查 Alist 是否已经启动
+            response_code=$(curl -s -o /dev/null -w "%{http_code}" http://localhost:8080)
+            if [ $response_code -eq 200 ]; then
+              echo "Alist is up and running."
+              break
+            else
+              echo "Alist is not yet running. Waiting..."
+              retries=$((retries+1))
+              sleep 5  # 等待 5 秒后重试
+            fi
+          done
+      
       - name: rclone
         uses: wei/rclone@v1
         env:
