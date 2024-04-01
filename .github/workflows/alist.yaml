@@ -34,7 +34,9 @@ jobs:
           mv config.json data/config.json
           nohup ./alist server > nohupcmd.out 2>&1 &
           ls ${{github.workspace}}/data
-
+        env:
+          ALIST_ADMIN_PASSWORD: admin
+          
       - name: 等Alist运行起来(大概2分钟)
         run: sleep 240s
         shell: bash
