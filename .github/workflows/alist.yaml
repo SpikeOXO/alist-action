@@ -6,18 +6,12 @@ on:
       Folder:
         description: '保存目录[没啥用]'
         required: true
-        default: 'testalist'
+        default: 'run'
 
 jobs:
-  Aria2-Aliyun:
+  run:
+    name: "sync-actions"
     runs-on: ubuntu-latest
-    container: ubuntu
-    services:
-      aliyun:
-        image: messense/aliyundrive-webdav
-        env:
-          REFRESH_TOKEN: '${{ secrets.ALIYUN_REFRESH_TOKEN }}'
-          PORT: 8080
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -33,14 +27,14 @@ jobs:
         run: |
           # init-alist 总是会重置管理员密码为环境变量。
           bash -x init_alist.sh
-          
+
       - name: Wait for Alist to start
         run: |
           max_retries=10
           retries=0
           while [ $retries -lt $max_retries ]; do
             # 使用 curl 命令检查 Alist 是否已经启动
-            response_code=$(curl -s -o /dev/null -w "%{http_code}" http://localhost:8080)
+            response_code=$(curl -s -o /dev/null -w "%{http_code}" http://localhost:5244)
             if [ $response_code -eq 200 ]; then
               echo "Alist is up and running."
               break
