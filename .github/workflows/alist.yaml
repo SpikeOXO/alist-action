@@ -36,9 +36,9 @@ jobs:
           ls ${{github.workspace}}/data
         env:
           ALIST_ADMIN_PASSWORD: admin
-          
+
       - name: 等Alist运行起来(大概2分钟)
-        run: sleep 240s
+        run: sleep 120s
         shell: bash
         
       - name: rclone
