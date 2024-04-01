@@ -9,7 +9,8 @@ on:
         default: 'run'
 
 jobs:
-  Alist:
+  run:
+    name: "sync-actions"
     runs-on: ubuntu-latest
     container: ubuntu
     services:
