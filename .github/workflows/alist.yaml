@@ -1,24 +1,38 @@
-name: Copy Files
-
+name: alistcopy
 on:
-  schedule:
-    - cron: '0 */8 * * *'  # 每隔8小时触发一次
+  repository_dispatch:
+  workflow_dispatch:
+    inputs:
+      Folder:
+        description: '保存目录[没啥用]'
+        required: true
+        default: 'testalist'
 
 jobs:
-  copy:
+  Aria2-Aliyun:
     runs-on: ubuntu-latest
+    container: ubuntu
+    services:
+      aliyun:
+        image: messense/aliyundrive-webdav
+        env:
+          REFRESH_TOKEN: '${{ secrets.ALIYUN_REFRESH_TOKEN }}'
+          PORT: 8080
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v2
-
-    - name: Install rclone
-      run: |
-        curl https://rclone.org/install.sh | sudo bash
-
-    - name: rclone
-      if: steps.downloading.outputs.filename != '' && !cancelled() && !failure()
-      uses: wei/rclone@v1
-      env:
-        RCLONE_CONF: ${{ secrets.RCLONE_CONF }}
-      with:
-        args: copy  a:/ b:/
+      - uses: actions/checkout@v2
+        with:
+          persist-credentials: false # otherwise, the token used is the GITHUB_TOKEN, instead of your personal token
+          fetch-depth: 0 
+      - name: 检查空间使用情况
+        run: |
+          echo "Free space:"
+          df -h
+          
+      - name: rclone
+        uses: wei/rclone@v1
+        env:
+          RCLONE_CONF: ${{ secrets.RCLONE_CONF }}
+        with:
+          args: copy a:/ crypt:/
+          
+   
