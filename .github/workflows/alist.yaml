@@ -36,7 +36,7 @@ jobs:
           ls ${{github.workspace}}/data
 
       - name: 等Alist运行起来(大概2分钟)
-        run: sleep 120s
+        run: sleep 240s
         shell: bash
         
       - name: rclone
