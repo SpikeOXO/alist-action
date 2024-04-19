@@ -5,18 +5,15 @@ jobs:
   continuous-curl:
     runs-on: ubuntu-latest
     steps:
+    - name: Set up Python 3.9
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.9
+    - name: install prerequisites
+      run: |
+        python -m pip install --upgrade pip wheel
+        pip install install requests
     - name: Looping Curl
       run: |
-        count=0
-        while [ $count -lt 10 ]; do
-          response_code=$(curl -s -o /dev/null -w "%{http_code}" www.google.com)
-           if [ $response_code -eq 200 ]; then
-                echo "HTTP 200 OK received. Exiting loop."
-                break
-            else
-                echo "Error: HTTP response code is not 200. Retrying in 5 seconds..."
-                sleep 5
-            fi
-          count=$((count+1))
-        done
-        curl -s  www.google.com
+        python tools.py
+      
