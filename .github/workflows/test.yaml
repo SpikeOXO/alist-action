@@ -24,6 +24,4 @@ jobs:dasd
       - name: Checkout code
         uses: actions/checkout@v2
       - name: Run Python script
-        run: |
-          sleep 15
-          python tools.py status      
+        run: python tools.py status      

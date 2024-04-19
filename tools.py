@@ -3,6 +3,9 @@ import requests
 import time
 
 def check_api_status():
+    print("alist starting......")
+    time.sleep(10)  # 等待 3 秒
+    print("alist starting......")
     while True:
         response = requests.post(
             "http://localhost:5244/api/fs/list",
@@ -12,7 +15,7 @@ def check_api_status():
             },
             json={"path": "", "page": 1, "per_page": 0, "refresh": False}
         )
-        if response.status_code == 300:
+        if response.status_code == 200:
             return True
         else:
             print("alist starting......")
