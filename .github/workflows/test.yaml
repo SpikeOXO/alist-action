@@ -24,4 +24,10 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
       - name: Run Python script
-        run: python tools.py status      
+        run: python tools.py status
+      - name: rclone
+        uses: wei/rclone@v1
+        env:
+          RCLONE_CONF: ${{ secrets.RCLONE_CONF }}
+      - name: start
+        run: rclone config 
