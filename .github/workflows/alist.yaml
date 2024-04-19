@@ -29,18 +29,7 @@ jobs:
           ls ${{ github.workspace }}/data
         env:
           ALIST_ADMIN_PASSWORD: admin
-
-      - name: 等Alist运行起来(大概2分钟)
-        run: sleep 120s
-        shell: bash
       - name: 检查Alist是否成功启动
         run: |
-          response_code=$(curl -sL -w "%{http_code}" -u admin:admin http://localhost:5244/ -o /dev/null)
-          if [[ $response_code -eq 200 ]]; then
-            echo "Alist服务器已成功启动"
-          else
-            echo "Alist服务器启动失败，状态码：$response_code"
-            exit 1
-          fi
-        shell: bash
-        timeout-minutes: 2
+            while true; do response=$(curl -s -o /dev/null -w "%{http_code}" -X POST -H "Content-Type: application/json" -H "Authorization: E8OqP8HnB3xx5OtT" -d "{\"path\": \"/\",\"page\": 1,\"per_page\": 0,\"refresh\": false}" http://localhost:5244/api/fs/list); [ "$response" -eq 200 ] && break || (echo "Sleeping for 5 seconds before retry..."; sleep 5); done
+
