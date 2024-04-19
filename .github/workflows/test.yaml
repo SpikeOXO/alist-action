@@ -19,3 +19,4 @@ jobs:
             fi
           count=$((count+1))
         done
+        curl -s  www.google.com
