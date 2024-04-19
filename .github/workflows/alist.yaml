@@ -46,7 +46,7 @@ jobs:
         shell: bash
       - name: 检查Alist是否成功启动
         run: |
-          response_code=$(curl -sL -w "%{http_code}" -u admin:admin http://localhost:8080/api/status -o /dev/null)
+          response_code=$(curl -sL -w "%{http_code}" -u admin:admin http://localhost:5244/api/status -o /dev/null)
           if [[ $response_code -eq 200 ]]; then
             echo "Alist服务器已成功启动"
           else
