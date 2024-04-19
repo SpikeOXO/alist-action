@@ -11,6 +11,8 @@ jobs:
         with:
           name: "config.json"
           json: ${{ secrets.ALIST_CONFIG }}
+      - name: 生成Alist的配置文件
+        run: pip install rclone-python
       - name: 运行Alist
         run: |
           curl -L -o alist.tar.gz https://github.com/alist-org/alist/releases/download/v3.30.0/alist-linux-amd64.tar.gz
