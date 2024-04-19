@@ -33,6 +33,6 @@ jobs:
         with:
           rclone_config: ${{ secrets.RCLONE_CONF }}
           disable_base64: true
-      - run: rclone copy alist:test2 alist:test3  
+      - run: rclone copy alist:test alist:crypt  
 
         
