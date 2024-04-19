@@ -15,17 +15,17 @@ jobs:
         pip install install requests
     - name:  Curl
       run: |
-        python tools.py status
-        pwd
         ls
         cd ..
-        pwd
         ls
-        python tools.py status
         cd ..
         ls
-        python tools.py status
         cd ..
-        python tools.py status
+        ls
+        cd ..
+        ls
+        cd ..
+        ls
+        cd ..
         ls
       
