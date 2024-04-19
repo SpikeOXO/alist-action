@@ -1,7 +1,7 @@
 name: Continuous Curl
 on:
   workflow_dispatch:    
-jobs:dasd
+jobs:
   test:
     runs-on: ubuntu-latest
     steps:
