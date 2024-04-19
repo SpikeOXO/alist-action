@@ -9,7 +9,13 @@ jobs:
       run: |
         count=0
         while [ $count -lt 10 ]; do
-          curl -s -o /dev/null -w "%{http_code}" www.google.com
+           if [ curl -s -o /dev/null -w "%{http_code}" www.google.com -eq 200 ]; then
+                echo "HTTP 200 OK received. Exiting loop."
+                break
+            else
+                echo "Error: HTTP response code is not 200. Retrying in 5 seconds..."
+                sleep 5
+            fi
           count=$((count+1))
           sleep 1  # 在每次循环之间添加延迟，以避免对目标服务器造成过大负载
         done
