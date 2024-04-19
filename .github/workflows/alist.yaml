@@ -31,12 +31,27 @@ jobs:
           ALIST_ADMIN_PASSWORD: admin
 
           
-      - name: 检查Alist是否成功启动
+      - name: 
         run: |
-            response=$(curl -s -o /dev/null -w "%{http_code}" -X POST -H "Content-Type: application/json" -H "Authorization: E8OqP8HnB3xx5OtT" -d '{"path": "","page": 1,"per_page": 0,"refresh": false}' http://localhost:5244/api/fs/list); 
+            response=$(); 
             if [ "$response" -eq 200 ]; then
                 break
             else
                 echo "Error: HTTP response code is not 200. Retrying in 5 seconds..."
                 sleep 5
             fi
+
+      - name: 检查Alist是否成功启动
+        run: |
+          while [ $count -lt 10 ]; do
+            response_code=$(curl -s -o /dev/null -w "%{http_code}" -X POST -H "Content-Type: application/json" -H "Authorization: E8OqP8HnB3xx5OtT" -d '{"path": "","page": 1,"per_page": 0,"refresh": false}' http://localhost:5244/api/fs/list)
+            if [ "$response" -eq 200 ]; then
+                echo "HTTP 200 OK received. Exiting loop."
+                break
+            else
+                echo "Error: HTTP response code is not 200. Retrying in 5 seconds..."
+                sleep 5
+            fi
+            count=$((count+1))
+            sleep 1  # 在每次循环之间添加延迟，以避免对目标服务器造成过大负载
+          done      
