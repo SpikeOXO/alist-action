@@ -5,20 +5,22 @@ jobs:
   continuous-curl:
     runs-on: ubuntu-latest
     steps:
-    - name: Set up Python 3.9
+    - name: 安装Python3.9
       uses: actions/setup-python@v2
       with:
         python-version: 3.9
-    - name: install prerequisites
+    - name: 安装所需要的Python信赖
       run: |
         python -m pip install --upgrade pip wheel
         pip install install requests
-    - name: Looping Curl
+    - name:  Curl
       run: |
         pwd
         ls
         cd ..
         pwd
         ls
-        python ./tools.py status
+        python tools.py status
+        cd ..
+        ls
       
