@@ -15,5 +15,10 @@ jobs:
         pip install install requests
     - name: Looping Curl
       run: |
+        pwd
+        ls
+        cd ..
+        pwd
+        ls
         python ./tools.py status
       
