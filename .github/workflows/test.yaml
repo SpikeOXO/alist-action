@@ -32,6 +32,7 @@ jobs:
         uses: AnimMouse/setup-rclone@v1
         with:
           rclone_config: ${{ secrets.RCLONE_CONF }}
+          disable_base64: true
       - run: rclone copy alist:test2 alist:test3  
 
         
