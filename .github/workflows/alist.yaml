@@ -1,4 +1,5 @@
 name: alistcopy
+
 on:
   repository_dispatch:
   workflow_dispatch:
@@ -13,6 +14,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+
       - name: 增加可用空间 (删除dotnet, android、haskell、CodeQL)
         shell: bash
         run: |
@@ -20,12 +22,14 @@ jobs:
           sudo rm -rf /usr/local/lib/android
           sudo rm -rf /opt/ghc
           sudo rm -rf /opt/hostedtoolcache/CodeQL
+
       - name: 生成Alist的配置文件
-        id: create-json
         uses: jsdaniell/create-json@v1.2.2
+        id: create-json
         with:
           name: "config.json"
           json: ${{ secrets.ALIST_CONFIG }}
+
       - name: 运行Alist
         run: |
           curl -L -o alist.tar.gz https://github.com/alist-org/alist/releases/download/v3.30.0/alist-linux-amd64.tar.gz
@@ -33,19 +37,28 @@ jobs:
           mkdir data
           mv config.json data/config.json
           nohup ./alist server > nohupcmd.out 2>&1 &
-          ls ${{github.workspace}}/data
+          ls ${{ github.workspace }}/data
         env:
           ALIST_ADMIN_PASSWORD: admin
 
       - name: 等Alist运行起来(大概2分钟)
         run: sleep 120s
         shell: bash
+      - name: 检查Alist是否成功启动
+        run: |
+          response_code=$(curl -sL -w "%{http_code}" -u admin:admin http://localhost:8080/api/status -o /dev/null)
+          if [[ $response_code -eq 200 ]]; then
+            echo "Alist服务器已成功启动"
+          else
+            echo "Alist服务器启动失败，状态码：$response_code"
+            exit 1
+          fi
+        shell: bash
+        timeout-minutes: 2
         
       - name: rclone
         uses: wei/rclone@v1
         env:
-          RCLONE_CONF: ${{secrets.RCLONE_CONF}}
+          RCLONE_CONF: ${{ secrets.RCLONE_CONF }}
         with:
           args: copy alist:0/ alist:1/
-          
-   
