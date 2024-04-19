@@ -2,40 +2,36 @@ name: Continuous Curl
 on:
   workflow_dispatch:    
 jobs:
-  alist_job:
-    name: 运行Alist
+  test:
     runs-on: ubuntu-latest
     steps:
-    - name: 运行Alist
-      id: alist
-      run: |
-        curl -L -o alist.tar.gz https://github.com/alist-org/alist/releases/download/v3.30.0/alist-linux-amd64.tar.gz
-        tar -xzf alist.tar.gz
-        mkdir data
-        mv config.json data/config.json
-        nohup ./alist server > nohupcmd.out 2>&1 &
-        ls ${{ github.workspace }}/data
-      env:
-        ALIST_ADMIN_PASSWORD: admin
-      ports:
-        - 5244:5244  # 将端口5244暴露出来供外部访问
-  rclone_job:
-    name: rclone
-    runs-on: ubuntu-latest
-    needs: alist_job
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
-    - name: Run Python script
-      run: python tools.py status
-    - name: Access Alist service
-      run: |
-        curl http://localhost:5244  # 在此处访问Alist服务的端口5244
-    - name: rclone
-      uses: wei/rclone@v1
-      env:
-        RCLONE_CONF: ${{ secrets.RCLONE_CONF }}
-      with:
-        args: copy alist:test2 alist:test3  
-
+      - name: 生成Alist的配置文件
+        uses: jsdaniell/create-json@v1.2.2
+        id: create-json
+        with:
+          name: "config.json"
+          json: ${{ secrets.ALIST_CONFIG }}
+      - name: 生成Alist的配置文件
+        run: pip install rclone-python
+      - name: 运行Alist
+        id: alist
+        run: |
+          curl -L -o alist.tar.gz https://github.com/alist-org/alist/releases/download/v3.30.0/alist-linux-amd64.tar.gz
+          tar -xzf alist.tar.gz
+          mkdir data
+          mv config.json data/config.json
+          nohup ./alist server > nohupcmd.out 2>&1 &
+          ls ${{ github.workspace }}/data
+        env:
+          ALIST_ADMIN_PASSWORD: admin
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Run Python script
+        run: python tools.py status
+      - name: rclone
+        uses: wei/rclone@v1
+        env:
+          RCLONE_CONF: ${{ secrets.RCLONE_CONF }}
+        with:
+          args: copy alist:test2 alist:test3  
         
