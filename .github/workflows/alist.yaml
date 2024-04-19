@@ -42,5 +42,3 @@ jobs:
             fi
             count=$((count+1))
           done
-          curl -s -X POST -H "Content-Type: application/json" -H "Authorization: alist-cea0a14f-a00b-4be5-be8a-8534c7ad93b4cKYFaynqjncwQjZSc1hEohcoIZsraCUq4sbKl313lSazI0XEDrHSsvXOpw6ziKL7" -d '{"path": "","page": 1,"per_page": 0,"refresh": false}' http://localhost:5244/api/fs/list
-
