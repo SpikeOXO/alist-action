@@ -30,4 +30,5 @@ jobs:
         env:
           RCLONE_CONF: ${{ secrets.RCLONE_CONF }}
       - name: start-rclone
-        run: rclone config 
+        with:
+          args: lsd alist:/
