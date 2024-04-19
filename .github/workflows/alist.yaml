@@ -29,18 +29,6 @@ jobs:
           ls ${{ github.workspace }}/data
         env:
           ALIST_ADMIN_PASSWORD: admin
-
-          
-      - name: 
-        run: |
-            response=$(); 
-            if [ "$response" -eq 200 ]; then
-                break
-            else
-                echo "Error: HTTP response code is not 200. Retrying in 5 seconds..."
-                sleep 5
-            fi
-
       - name: 检查Alist是否成功启动
         run: |
           while [ $count -lt 10 ]; do
