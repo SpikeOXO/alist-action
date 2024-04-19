@@ -29,5 +29,5 @@ jobs:
         uses: wei/rclone@v1
         env:
           RCLONE_CONF: ${{ secrets.RCLONE_CONF }}
-      - name: start
+      - name: start-rclone
         run: rclone config 
