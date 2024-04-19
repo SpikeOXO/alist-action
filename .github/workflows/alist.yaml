@@ -29,17 +29,32 @@ jobs:
           ls ${{ github.workspace }}/data
         env:
           ALIST_ADMIN_PASSWORD: admin
-      - name: 检查Alist是否成功启动
-        run: |
-          count=0  # 初始化 count
-          while [ $count -lt 10 ]; do
-            response_code=$(curl -s -o /dev/null -w "%{http_code}" -X POST -H "Content-Type: application/json" -H "Authorization: alist-cea0a14f-a00b-4be5-be8a-8534c7ad93b4cKYFaynqjncwQjZSc1hEohcoIZsraCUq4sbKl313lSazI0XEDrHSsvXOpw6ziKL7" -d '{"path": "","page": 1,"per_page": 0,"refresh": false}' http://localhost:5244/api/fs/list)
-            if [ "$response" -eq 200 ]; then
+      # - name: xd
+      #   run: |
+      #     count=0  # 初始化 count
+      #     while [ $count -lt 10 ]; do
+      #       response_code=$(curl -s -o /dev/null -w "%{http_code}" -X POST -H "Content-Type: application/json" -H "Authorization: alist-cea0a14f-a00b-4be5-be8a-8534c7ad93b4cKYFaynqjncwQjZSc1hEohcoIZsraCUq4sbKl313lSazI0XEDrHSsvXOpw6ziKL7" -d '{"path": "","page": 1,"per_page": 0,"refresh": false}' http://localhost:5244/api/fs/list)
+      #       if [ "$response" -eq 200 ]; then
+      #           echo "HTTP 200 OK received. Exiting loop."
+      #           break
+      #       else
+      #           echo "Error: HTTP response code is not 200. Retrying in 5 seconds..."
+      #           sleep 5
+      #       fi
+      #       count=$((count+1))
+      #     done
+    - name: Looping Curl
+      run: |
+        count=0
+        while [ $count -lt 10 ]; do
+          response_code=$(curl -s -o /dev/null -w "%{http_code}" www.google.com)
+           if [ $response_code -eq 200 ]; then
                 echo "HTTP 200 OK received. Exiting loop."
                 break
             else
                 echo "Error: HTTP response code is not 200. Retrying in 5 seconds..."
                 sleep 5
             fi
-            count=$((count+1))
-          done
+          count=$((count+1))
+        done
+        curl -s  www.google.com
