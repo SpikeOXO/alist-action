@@ -13,23 +13,12 @@ jobs:
   Onedriver:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-
-      - name: 增加可用空间 (删除dotnet, android、haskell、CodeQL)
-        shell: bash
-        run: |
-          sudo rm -rf /usr/share/dotnet
-          sudo rm -rf /usr/local/lib/android
-          sudo rm -rf /opt/ghc
-          sudo rm -rf /opt/hostedtoolcache/CodeQL
-
       - name: 生成Alist的配置文件
         uses: jsdaniell/create-json@v1.2.2
         id: create-json
         with:
           name: "config.json"
           json: ${{ secrets.ALIST_CONFIG }}
-
       - name: 运行Alist
         run: |
           curl -L -o alist.tar.gz https://github.com/alist-org/alist/releases/download/v3.30.0/alist-linux-amd64.tar.gz
@@ -55,10 +44,3 @@ jobs:
           fi
         shell: bash
         timeout-minutes: 2
-        
-      - name: rclone
-        uses: wei/rclone@v1
-        env:
-          RCLONE_CONF: ${{ secrets.RCLONE_CONF }}
-        with:
-          args: copy alist:0/ alist:1/
