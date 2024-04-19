@@ -31,5 +31,5 @@ jobs:
           ALIST_ADMIN_PASSWORD: admin
       - name: 检查Alist是否成功启动
         run: |
-            while true; do response=$(curl -s -o /dev/null -w "%{http_code}" -X POST -H "Content-Type: application/json" -H "Authorization: E8OqP8HnB3xx5OtT" -d "{\"path\": \"/\",\"page\": 1,\"per_page\": 0,\"refresh\": false}" http://localhost:5244/api/fs/list); [ "$response" -eq 200 ] && break || (echo "Sleeping for 5 seconds before retry..."; sleep 5); done
+          while true; do response=$(curl -s -o /dev/null -w "%{http_code}" -X POST -H "Content-Type: application/json" -H "Authorization: E8OqP8HnB3xx5OtT" -d "{\"path\": \"/\",\"page\": 1,\"per_page\": 0,\"refresh\": false}" http://localhost:5244/api/fs/list); [ "$response" -eq 200 ] && break || (echo "Sleeping for 5 seconds before retry..."; sleep 5); done
 
