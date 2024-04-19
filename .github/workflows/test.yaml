@@ -15,5 +15,5 @@ jobs:
         pip install install requests
     - name: Looping Curl
       run: |
-        python tools.py status
+        python ./tools.py status
       
