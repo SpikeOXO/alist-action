@@ -45,5 +45,5 @@ jobs:
       #     done
       - name: Loopisng Curl
         run: |
-          python tools.py status
+          python ../tools.py status
          
