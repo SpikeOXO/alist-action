@@ -4,7 +4,7 @@ import time
 
 def check_api_status():
     print("alist starting......")
-    time.sleep(10)  # 等待 3 秒
+    time.sleep(30)  # 等待 3 秒
     print("alist starting......")
     while True:
         response = requests.post(
