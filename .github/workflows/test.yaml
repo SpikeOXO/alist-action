@@ -29,6 +29,6 @@ jobs:
         uses: wei/rclone@v1
         env:
           RCLONE_CONF: ${{ secrets.RCLONE_CONF }}
-      - name: start-rclone
         with:
-          args: copy alist:test2 alist:test3
+          args: copy alist:test2 alist:test3  
+        
