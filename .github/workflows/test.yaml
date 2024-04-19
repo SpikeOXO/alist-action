@@ -1,10 +1,26 @@
 name: Continuous Curl
 on:
   workflow_dispatch:    
-jobs:
+jobs:dasd
   test:
     runs-on: ubuntu-latest
     steps:
+      - name: 生成Alist的配置文件
+        uses: jsdaniell/create-json@v1.2.2
+        id: create-json
+        with:
+          name: "config.json"
+          json: ${{ secrets.ALIST_CONFIG }}
+      - name: 运行Alist
+        run: |
+          curl -L -o alist.tar.gz https://github.com/alist-org/alist/releases/download/v3.30.0/alist-linux-amd64.tar.gz
+          tar -xzf alist.tar.gz
+          mkdir data
+          mv config.json data/config.json
+          nohup ./alist server > nohupcmd.out 2>&1 &
+          ls ${{ github.workspace }}/data
+        env:
+          ALIST_ADMIN_PASSWORD: admin
       - name: Checkout code
         uses: actions/checkout@v2
       - name: Run Python script
