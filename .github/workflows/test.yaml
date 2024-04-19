@@ -33,6 +33,8 @@ jobs:
         with:
           rclone_config: ${{ secrets.RCLONE_CONF }}
           disable_base64: true
-      - run: rclone copy alist:test alist:test/AMWF
+      - run: |
+          curl  -X PROPFIND -H "Depth: 1" -u admin:admin  http://localhost:5244/dav/
+          rclone copy alist:test alist:test/AMWF
 
         
