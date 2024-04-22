@@ -28,13 +28,26 @@ jobs:
         uses: actions/checkout@v2
       - name: Run Python script
         run: python tools.py status
+
       - name: Setup Rclone
         uses: AnimMouse/setup-rclone@v1
         with:
-          rclone_config: ${{ secrets.RCLONE_CONF }}
+          rclone_config: |
+            [rclone-test-remote]
+            type = http
+            url = https://beta.rclone.org/test/
           disable_base64: true
-      - run: |
-          curl  -X PROPFIND -H "Depth: 1" -u admin:admin  http://app:5244/dav/
-          rclone copy alist:test alist:test/AMWF
+          
+      - run: 'rclone lsd rclone-test-remote:'
+
+
+      # - name: Setup Rclone
+      #   uses: AnimMouse/setup-rclone@v1
+      #   with:
+      #     rclone_config: ${{ secrets.RCLONE_CONF }}
+      #     disable_base64: true
+      # - run: |
+      #     curl  -X PROPFIND -H "Depth: 1" -u admin:admin  http://app:5244/dav/
+      #     rclone copy alist:test alist:test/AMWF
 
         
