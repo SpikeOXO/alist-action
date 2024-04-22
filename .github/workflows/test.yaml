@@ -41,7 +41,7 @@ jobs:
             pass = BsqgvpFsWCRN0Jn8vSGtgESLrwNi
           disable_base64: true
           
-      - run: 'rclone lsd rclone-test-remote:'
+      - run: 'rclone lsd alist:'
 
 
       # - name: Setup Rclone
