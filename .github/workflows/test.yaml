@@ -33,9 +33,12 @@ jobs:
         uses: AnimMouse/setup-rclone@v1
         with:
           rclone_config: |
-            [rclone-test-remote]
-            type = http
-            url = https://beta.rclone.org/test/
+            [alist]
+            type = webdav
+            url = http://localhost:5244/dav
+            vendor = other
+            user = admin
+            pass = BsqgvpFsWCRN0Jn8vSGtgESLrwNi
           disable_base64: true
           
       - run: 'rclone lsd rclone-test-remote:'
