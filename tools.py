@@ -16,10 +16,12 @@ def check_api_status():
             json={"path": "", "page": 1, "per_page": 0, "refresh": False}
         )
         if response.status_code == 200:
+            print(response)
             return True
         else:
+            print(response)
             print("alist starting......")
-            time.sleep(5)
+            time.sleep(5) 
 
 # 调用函数
 
